@@ -4,13 +4,13 @@ body {
     justify-content: center;    /* horizontal */
     align-items: center;        /* vertical */
     min-height: 100vh;
-    background: #f0f2f5;
+    background: #e6ede9;
     margin: 0;
 }
 
 .container {
     width: 600px;
-    background: rgb(255, 255, 255);
+    background: rgb(248, 250, 246);
     padding: 2rem;
     border-radius: 12px;
     box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
