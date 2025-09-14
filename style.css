@@ -32,6 +32,14 @@ body {
     color: crimson;
 }
 
+.correctSpace {
+    background-color: rgb(218, 243, 218);
+}
+
+.wrongSpace {
+    background-color: rgb(238, 210, 216);
+}
+
 #quote-input {
     width: 95%;
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
