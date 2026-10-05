@@ -17,6 +17,15 @@ let incorrectChars = 0;
 let startTime;
 let endTime;
 
+function normalize(text) {
+    return text
+    .replace(/[‘’]/g, "'")
+    .replace(/[“”]/g, '"')
+    .replace(/[–—]/g, "-")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 function getRandomQuote () {
     const randomIndex = Math.floor(Math.random() * quotes.length);
     return quotes[randomIndex];
