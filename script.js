@@ -1,6 +1,5 @@
 const quoteDisplay = document.getElementById("quote-display");
 const startBtn = document.getElementById("start-btn");
-const quoteInput = document.getElementById("quote-input");
 
 const quotes = [
    "The beautiful garden, filled with vibrant flowers and lush greenery, provided a peaceful escape from the busy city life, allowing visitors to relax and enjoy nature’s calming presence while listening to the gentle sounds of birds singing in the early morning sunlight.", 
@@ -16,6 +15,7 @@ let typedValue = "";
 let incorrectChars = 0;
 let startTime;
 let endTime;
+let finished = false;
 
 function normalize(text) {
     return text
@@ -28,7 +28,7 @@ function normalize(text) {
 
 function getRandomQuote () {
     const randomIndex = Math.floor(Math.random() * quotes.length);
-    return quotes[randomIndex];
+    return normalize(quotes[randomIndex]);
 }
 
 // replaced string quote with char span quote
@@ -50,36 +50,17 @@ function updateQuoteColor() {
 
     quoteSpans.forEach((span, index) => {
         const typedChar = typedValue[index];
-        // console.log(typedValue);
-        // console.log(span.textContent);
+        span.className = "";
+        if (typedChar === undefined) return;
 
-        if (!typedChar) {
-            span.classList.remove("correct", "wrong", "correctSpace", "wrongSpace");
-        } else if (typedChar == span.textContent) {
-            if (typedChar === " " ) {
-                span.classList.add("correctSpace");
-                span.classList.remove("wrongSpace");
-            } else {
-                span.classList.add("correct");
-                span.classList.remove("wrong");
-            }
-        } else {
-            // note to self- because this is a loop, some past characters could be "wrong," 
-            //      which could get added to incorrectChars, so conditions makes sure it's an
-            //      empty character. 
-            if (!span.classList.contains("wrong") && !span.classList.contains("wrongSpace")
-                && !span.classList.contains("correct") && !span.classList.contains("correctSpace")) {
-                incorrectChars ++;
-            }
-            if (span.textContent == " ") {
-                span.classList.add("wrongSpace");
-                span.classList.remove("correctSpace");
-            } else {
-                span.classList.add("wrong");
-                span.classList.remove("correct");
-            }
-        }
-    })
+        const isCorrent = typedChar === span.textContent;
+        const isSpace = span.textContent === " ";
+        span.classList.add(
+            isSpace ? (isCorrent ? "correctSpace" : "wrongSpace")
+                    : (isCorrent ? "correct" : "wrong")
+        );
+
+    });
 }
 
 function checkFinish() {
@@ -87,8 +68,9 @@ function checkFinish() {
         startTime = new Date();
     }
 
-    if (currentQuote === typedValue || currentQuote.length == typedValue.length) {
+    if (currentQuote.length === typedValue.length) {
         console.log("finished");
+        finished = true;
         endTime = new Date();
         const timeTaken  = (endTime - startTime) / 1000 / 60;
         const wordCount = currentQuote.split(" ").length;
@@ -108,6 +90,7 @@ function checkFinish() {
 startBtn.addEventListener("click", () => {
     typedValue = "";
     incorrectChars = 0;
+    finished = false;
     const randomQuote = getRandomQuote();
     currentQuote = randomQuote; // used to check finish
     displayQuote(randomQuote);
@@ -121,7 +104,10 @@ startBtn.addEventListener("click", () => {
 
 // TYPED KEY
 document.addEventListener("keydown", (e) => {
-    if (!currentQuote) return;
+    // ignore ctrl / cmd keys
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+
+    if (!currentQuote || finished) return;
 
     const key = e.key;
 
@@ -132,6 +118,7 @@ document.addEventListener("keydown", (e) => {
     if (key === "Backspace") {
         typedValue = typedValue.slice(0, -1);
     } else if (key.length == 1) {
+        if (key !== currentQuote[typedValue.length]) incorrectChars++;
         typedValue += key;
     }
 

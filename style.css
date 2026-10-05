@@ -40,21 +40,6 @@ body {
     background-color: rgb(238, 210, 216);
 }
 
-#quote-input {
-    width: 95%;
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 1.1rem;
-    padding: 0.5rem;
-    border-radius: 8px;
-    border: 2px solid #ddd;
-    margin: 1rem 0rem;
-}
-
-#quote-input:focus {
-    outline: none;
-    border-color: rgb(178, 178, 178);
-}
-
 #start-btn {
     margin-top: 1rem;
     padding: 0.75rem 1.25rem;
